@@ -1,21 +1,13 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect 
+from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm
+from .forms import LoginForm, WithdrawForm 
 
-
-money = 500
-
-def index(request):
-    if request.user.username != '':
-        return HttpResponse(f"Hello, world to {request.user.username}. Money: {money}")
-    else:
-        return redirect('/csrf/login')
-    
+account_balance = 500
 
 def sign_in(request):
-
     if request.method == 'GET':
         form = LoginForm()
         return render(request,'csrf/login.html', {'form': form})
@@ -32,16 +24,26 @@ def sign_in(request):
                 return redirect('/csrf/')
         
         return render(request,'csrf/login.html',{'form': form})
+    else:
+        return HttpResponseForbidden()
+
+def index(request):
+    if request.user.username != '':
+        if request.method == 'GET':
+            form = WithdrawForm()
+            return render(request,'csrf/index.html', {'withdraw_form': form, 'account_balance': account_balance})
+        else: 
+            return HttpResponseForbidden()
+    else:
+        return redirect('/csrf/login')
 
 @login_required(login_url='/csrf/login/')
-def transfer(request): 
-    amount = int(request.GET.get('amount','0'))
-    print(f"transfering: {{amount}}")
-    if request.user.username != '':
-        global money 
-        money -= amount
-        return HttpResponse(f"{request.user.username}")
+def transfer(request):
+    global account_balance 
+    if request.method == "GET":
+        amount = int(request.GET.get('amount','0'))
+        account_balance -= amount
+        return render(request, 'csrf/transfer.html', {'amount': amount} )
     else:
-        return HttpResponse("")
-        
+        return HttpResponseForbidden()
 
