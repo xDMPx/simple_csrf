@@ -1,5 +1,11 @@
 Welcome {{request.user.username}}.</br>
 Account Balance: {{account_balance}}
+<h2>Recent Transations:</h2>
+<ul>
+{% for transation in transations_history %}
+    <li>{{transation}}</li>
+{% endfor %}
+</ul>
 <form action="{% url 'transfer' %}" method="GET" novalidate>
 	<h2>Withdraw</h2>
 	{{withdraw_form.as_p}}

@@ -6,6 +6,7 @@ from .forms import LoginForm, TransferForm, WithdrawForm
 from django.views.decorators.csrf import csrf_exempt
 
 account_balance = 500
+transations_history = []
 
 def sign_in(request):
     if request.method == 'GET':
@@ -32,7 +33,7 @@ def index(request):
         if request.method == 'GET':
             withdraw_form = WithdrawForm()
             transfer_form = TransferForm()
-            return render(request,'csrf/index.html', {'withdraw_form': withdraw_form, 'transfer_form': transfer_form, 'account_balance': account_balance})
+            return render(request,'csrf/index.html', {'withdraw_form': withdraw_form, 'transfer_form': transfer_form, 'account_balance': account_balance, 'transations_history': transations_history})
         else: 
             return HttpResponseForbidden()
     else:
@@ -42,14 +43,17 @@ def index(request):
 @csrf_exempt
 def transfer(request):
     global account_balance 
+    global transations_history 
     if request.method == "GET":
         amount = int(request.GET.get('amount','0'))
         account_balance -= amount
+        transations_history.append(f"Withdrawal {amount}")
         return render(request, 'csrf/transfer.html', {'withdraw': True, 'amount': amount} )
     elif request.method == "POST":
         account = request.POST.get('account',' ')
         amount = int(request.POST.get('amount','0'))
         account_balance -= amount
+        transations_history.append(f"Transfered {amount} to {account}")
         return render(request, 'csrf/transfer.html', {'withdraw': False,'account': account, 'amount': amount} )
     else:
         return HttpResponseForbidden()
