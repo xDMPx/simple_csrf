@@ -5,3 +5,9 @@ Account Balance: {{account_balance}}
 	{{withdraw_form.as_p}}
 	<input type="submit" value="Withdraw"/>
 </form>
+<form action="{% url 'transfer' %}" method="POST" novalidate>
+    {% csrf_token %}
+	<h2>Transfer</h2>
+	{{transfer_form.as_p}}
+	<input type="submit" value="Transfer"/>
+</form>

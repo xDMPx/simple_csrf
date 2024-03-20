@@ -7,3 +7,7 @@ class LoginForm(forms.Form):
 
 class WithdrawForm(forms.Form):
     amount = forms.IntegerField(min_value=1)
+
+class TransferForm(forms.Form):
+    account = forms.CharField(min_length=5)
+    amount = forms.IntegerField(min_value=0)

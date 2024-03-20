@@ -1,4 +1,8 @@
+{% if withdraw %}
 Withdrawn: {{amount}}
+{% else %}
+Tranfsered {{amount}} to {{account}}
+{% endif %}
 <script>
     setTimeout(function() {
         window.location.href = '/csrf/';
