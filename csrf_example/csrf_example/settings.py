@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-5%z@ph*f#43(uss!_2fsq1#55fi=^(p#gsv(b#xo@$xu(6u)g2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -125,5 +125,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+## ALLOW CSRF FOR BROWSERS THAT HAVE SAMESITE=LAX BY DEFAULT
 SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
