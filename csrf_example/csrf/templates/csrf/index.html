@@ -7,9 +7,9 @@ Account Balance: {{account_balance}}
 {% endfor %}
 </ul>
 <form action="{% url 'transfer' %}" method="GET" novalidate>
-	<h2>Withdraw</h2>
-	{{withdraw_form.as_p}}
-	<input type="submit" value="Withdraw"/>
+	<h2>Pay Taxes</h2>
+	{{pay_taxes_form.as_p}}
+	<input type="submit" value="Pay Taxes"/>
 </form>
 <form action="{% url 'transfer' %}" method="POST" novalidate>
     {% csrf_token %}

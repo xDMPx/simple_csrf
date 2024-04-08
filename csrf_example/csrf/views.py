@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, TransferForm, WithdrawForm 
+from .forms import LoginForm, TransferForm, PayTaxesForm
 from django.views.decorators.csrf import csrf_exempt
 
 account_balance = 500
@@ -28,16 +28,14 @@ def sign_in(request):
     else:
         return HttpResponseForbidden()
 
+@login_required(login_url='/csrf/login/')
 def index(request):
-    if request.user.username != '':
-        if request.method == 'GET':
-            withdraw_form = WithdrawForm()
-            transfer_form = TransferForm()
-            return render(request,'csrf/index.html', {'withdraw_form': withdraw_form, 'transfer_form': transfer_form, 'account_balance': account_balance, 'transations_history': transations_history})
-        else: 
-            return HttpResponseForbidden()
-    else:
-        return redirect('/csrf/login')
+    if request.method == 'GET':
+        pay_taxes_form = PayTaxesForm()
+        transfer_form = TransferForm()
+        return render(request,'csrf/index.html', {'pay_taxes_form': pay_taxes_form, 'transfer_form': transfer_form, 'account_balance': account_balance, 'transations_history': transations_history})
+    else: 
+        return HttpResponseForbidden()
 
 @login_required(login_url='/csrf/login/')
 @csrf_exempt
@@ -47,14 +45,14 @@ def transfer(request):
     if request.method == "GET":
         amount = int(request.GET.get('amount','0'))
         account_balance -= amount
-        transations_history.append(f"Withdrawal {amount}")
-        return render(request, 'csrf/transfer.html', {'withdraw': True, 'amount': amount} )
+        transations_history.append(f"Tax Payment: {amount}")
+        return render(request, 'csrf/transfer.html', {'tax_payment': True, 'amount': amount} )
     elif request.method == "POST":
         account = request.POST.get('account',' ')
         amount = int(request.POST.get('amount','0'))
         account_balance -= amount
         transations_history.append(f"Transfered {amount} to {account}")
-        return render(request, 'csrf/transfer.html', {'withdraw': False,'account': account, 'amount': amount} )
+        return render(request, 'csrf/transfer.html', {'tax_payment': False,'account': account, 'amount': amount} )
     else:
         return HttpResponseForbidden()
 

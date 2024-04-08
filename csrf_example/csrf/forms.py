@@ -5,7 +5,7 @@ class LoginForm(forms.Form):
     username = forms.CharField(max_length=65)
     password = forms.CharField(max_length=65, widget=forms.PasswordInput)
 
-class WithdrawForm(forms.Form):
+class PayTaxesForm(forms.Form):
     amount = forms.IntegerField(min_value=1)
 
 class TransferForm(forms.Form):
