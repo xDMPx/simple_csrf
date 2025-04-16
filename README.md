@@ -14,3 +14,8 @@ This repository demonstrates a basic example of executing a Cross-Site Request F
 * `same_site_none_get.html` - example of how to attack GET when `SameSite` cookie attribute is set to `None`
 * `same_site_lax_get.html` - example of how to attack GET when `SameSite` cookie attribute is set to `Lax`
 
+## Lax
+To test CSRF attack when the cookie attribute is set to `Lax`, it is necessary to modify `settings.py` as follows:
+```
+SESSION_COOKIE_SAMESITE = 'Lax'
+```
